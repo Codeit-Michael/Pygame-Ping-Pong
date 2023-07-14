@@ -7,7 +7,7 @@ class Player(pygame.sprite.Sprite):
 		self.y = y
 		self.rect = pygame.Rect(self.x, self.y, width, height)
 		self.color = pygame.Color("red")
-		self.player_speed = 3
+		self.player_speed = 10
 		
 		self.score = 0
 

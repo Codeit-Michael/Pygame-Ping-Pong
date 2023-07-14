@@ -1,5 +1,6 @@
 import pygame
 from player import Player
+from ball import Ball
 from settings import WIDTH, HEIGHT, player_width, player_height
 
 class Table:
@@ -7,6 +8,7 @@ class Table:
 		self.screen = screen
 		self.game_over = False
 		self.score_limit = 7
+		self.ball = Ball(WIDTH // 2, HEIGHT // 2, player_width)
 		self._generate_world()
 
 	# create and add player to the screen
@@ -33,6 +35,7 @@ class Table:
 
 
 	def update(self):		
-		self.playerA.update(self.screen)
-		
+		self.playerA.update(self.screen)		
 		self.playerB.update(self.screen)
+
+		self.ball.animate(self.screen)
