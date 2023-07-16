@@ -7,33 +7,36 @@ class Ball:
 	def __init__(self, x, y, radius, length = 0):
 		self.x = x
 		self.y = y
-		self.color = pygame.Color("red")
 		self.radius = radius
 		self.length = length
-		self.status = "fall"
-		self.FPS = pygame.time.Clock()
-		self.dir = 10
+		self.color = pygame.Color("red")
+		self.direction = "right"
+		self.serve = False
+		self.speed_x = 0
+		self.speed_y = 0
 
-	def animate(self, screen):
-		if self.y >= HEIGHT - self.radius:
-			self.status = "bounce"
-		elif self.y <= 0 + self.radius:
-			self.status = "fall"
+	def serve_ball(self):
+		pass
 
-		if self.x >= WIDTH - self.radius:
-			self.dir = -50
-		elif self.x <= 0 + self.radius:
-			self.dir = 50
-
-		if self.status == "fall":
-			self.y += 20
-			self.x += self.dir
+	def _ball_movement(self):
+		# horizontal handling
+		if self.direction == "right":
+			self.speed_x = 20
 		else:
-			self.y -= 20
-			self.x += self.dir
+			self.speed_x = -20
 
-		if self.x >= WIDTH + self.radius // 2:
-			self.x = 0 - self.radius // 2
+		# vertical handling
+		if self.y >= HEIGHT - self.radius:
+			self.speed_y = -20
+		elif self.y <= 0 + self.radius:
+			self.speed_y = 20
+
+		# wall bounce handling
+
+		self.x += self.speed_x
+		self.y += self.speed_y
 
 
+	def update(self, screen):
+		self._ball_movement()
 		ball = pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius, self.length)
