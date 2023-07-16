@@ -16,6 +16,19 @@ class Table:
 		self.playerA = Player(0, HEIGHT // 2 - (player_height // 2), player_width, player_height)
 		self.playerB = Player(WIDTH - player_width,  HEIGHT // 2 - (player_height // 2), player_width, player_height)
 
+	def _ball_hit(self):
+		# print(self.playerA.rect.left, self.playerB.rect.right)
+		if self.ball.rect.right >= WIDTH:
+			self.ball.rect.x = WIDTH // 2
+		elif self.ball.rect.left <= 0:
+			self.ball.rect.x = WIDTH // 2
+
+		if pygame.Rect.colliderect(self.ball.rect, self.playerA.rect):
+			self.ball.direction = "right"
+			print(True)
+		if pygame.Rect.colliderect(self.ball.rect, self.playerB.rect):
+			self.ball.direction = "left"
+
 	def player_move(self):
 		keys = pygame.key.get_pressed()
 
@@ -37,5 +50,5 @@ class Table:
 	def update(self):		
 		self.playerA.update(self.screen)		
 		self.playerB.update(self.screen)
-
 		self.ball.update(self.screen)
+		self._ball_hit()

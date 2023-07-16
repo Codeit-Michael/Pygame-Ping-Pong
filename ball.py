@@ -9,9 +9,9 @@ class Ball:
 		self.y = y
 		self.radius = radius
 		self.length = length
+		self.rect = pygame.Rect(self.x, self.y, radius, radius)
 		self.color = pygame.Color("red")
 		self.direction = "right"
-		self.serve = False
 		self.speed_x = 0
 		self.speed_y = 0
 
@@ -26,17 +26,17 @@ class Ball:
 			self.speed_x = -20
 
 		# vertical handling
-		if self.y >= HEIGHT - self.radius:
+		if self.rect.y >= HEIGHT - self.radius:
 			self.speed_y = -20
-		elif self.y <= 0 + self.radius:
+		elif self.rect.y <= 0 + self.radius:
 			self.speed_y = 20
 
 		# wall bounce handling
 
-		self.x += self.speed_x
-		self.y += self.speed_y
-
+		self.rect.x += self.speed_x
+		self.rect.y += self.speed_y
 
 	def update(self, screen):
 		self._ball_movement()
-		ball = pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius, self.length)
+		# ball = pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius, self.length)
+		pygame.draw.rect(screen, self.color, self.rect)
