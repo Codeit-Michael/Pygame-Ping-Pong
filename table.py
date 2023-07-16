@@ -8,24 +8,31 @@ class Table:
 		self.screen = screen
 		self.game_over = False
 		self.score_limit = 7
-		self.ball = Ball(WIDTH // 2 - player_width, HEIGHT - player_width, player_width)
 		self._generate_world()
+
+		# text info
+		self.font = pygame.font.SysFont('Bauhaus 93', 60)
+		self.inst_font = pygame.font.SysFont('Bauhaus 93', 30)
+		self.color = pygame.Color("white")
 
 	# create and add player to the screen
 	def _generate_world(self):
 		self.playerA = Player(0, HEIGHT // 2 - (player_height // 2), player_width, player_height)
 		self.playerB = Player(WIDTH - player_width,  HEIGHT // 2 - (player_height // 2), player_width, player_height)
+		self.ball = Ball(WIDTH // 2 - player_width, HEIGHT - player_width, player_width)
 
 	def _ball_hit(self):
-		# print(self.playerA.rect.left, self.playerB.rect.right)
+		# if ball is not hit by a player
 		if self.ball.rect.right >= WIDTH:
+			self.playerA.score += 1
 			self.ball.rect.x = WIDTH // 2
 		elif self.ball.rect.left <= 0:
+			self.playerB.score += 1
 			self.ball.rect.x = WIDTH // 2
 
+		# if ball land in the player
 		if pygame.Rect.colliderect(self.ball.rect, self.playerA.rect):
 			self.ball.direction = "right"
-			print(True)
 		if pygame.Rect.colliderect(self.ball.rect, self.playerB.rect):
 			self.ball.direction = "left"
 
@@ -46,9 +53,18 @@ class Table:
 			if self.playerB.rect.bottom < HEIGHT:
 				self.playerB.move_bottom()
 
+	def _show_score(self):
+		A_score, B_score = str(self.playerA.score), str(self.playerB.score)
+		A_score = self.font.render(A_score, True, self.color)
+		B_score = self.font.render(B_score, True, self.color)
+		self.screen.blit(A_score, (WIDTH // 4, 50))
+		self.screen.blit(B_score, ((WIDTH // 4) * 3, 50))
 
-	def update(self):		
+	def update(self):
+		self._show_score()
+
 		self.playerA.update(self.screen)		
 		self.playerB.update(self.screen)
-		self.ball.update(self.screen)
+
 		self._ball_hit()
+		self.ball.update(self.screen)
