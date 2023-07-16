@@ -2,7 +2,6 @@ import pygame
 
 class Player:
 	def __init__(self, x, y, width, height):
-		# super().__init__()
 		self.x = x
 		self.y = y
 		self.rect = pygame.Rect(self.x, self.y, width, height)
