@@ -8,6 +8,7 @@ class Table:
 		self.screen = screen
 		self.game_over = False
 		self.score_limit = 7
+		self.game_mode = "single"
 		self._generate_world()
 
 		# text info
@@ -38,24 +39,7 @@ class Table:
 		if pygame.Rect.colliderect(self.ball.rect, self.playerB.rect):
 			self.ball.direction = "left"
 
-	def player_move(self):
-		keys = pygame.key.get_pressed()
-
-		# if keys[pygame.K_w]:
-		# 	if self.playerA.rect.top > 0:
-		# 		self.playerA.move_up()
-		# if keys[pygame.K_s]:
-		# 	if self.playerA.rect.bottom < HEIGHT:
-		# 		self.playerA.move_bottom()
-
-		if keys[pygame.K_UP]:
-			if self.playerB.rect.top > 0:
-				self.playerB.move_up()
-		if keys[pygame.K_DOWN]:
-			if self.playerB.rect.bottom < HEIGHT:
-				self.playerB.move_bottom()
-
-	def bot_opponent(self):
+	def _bot_opponent(self):
 		if self.ball.direction == "left" and self.ball.rect.centery != self.playerA.rect.centery:
 			if self.ball.rect.top <= self.playerA.rect.top:
 				if self.playerA.rect.top > 0:
@@ -63,6 +47,28 @@ class Table:
 			if self.ball.rect.bottom >= self.playerA.rect.bottom:
 				if self.playerA.rect.bottom < HEIGHT:
 					self.playerA.move_bottom()
+
+	def player_move(self):
+		keys = pygame.key.get_pressed()
+
+		# gives player A access to movements for multiplayer mode
+		if keys[pygame.K_w] and self.game_mode == "multiplayer":
+			if self.playerA.rect.top > 0:
+				self.playerA.move_up()
+		if keys[pygame.K_s] and self.game_mode == "multiplayer":
+			if self.playerA.rect.bottom < HEIGHT:
+				self.playerA.move_bottom()
+
+		# gives player A bot movement for single playing mode
+		if self.game_mode == "single":
+			self._bot_opponent()
+
+		if keys[pygame.K_UP]:
+			if self.playerB.rect.top > 0:
+				self.playerB.move_up()
+		if keys[pygame.K_DOWN]:
+			if self.playerB.rect.bottom < HEIGHT:
+				self.playerB.move_bottom()
 
 	def _show_score(self):
 		A_score, B_score = str(self.playerA.score), str(self.playerB.score)
@@ -74,11 +80,7 @@ class Table:
 	def update(self):
 		self._show_score()
 
-		# bot
-		self.bot_opponent()
 		self.playerA.update(self.screen)		
-
-		# player
 		self.playerB.update(self.screen)
 
 		self._ball_hit()

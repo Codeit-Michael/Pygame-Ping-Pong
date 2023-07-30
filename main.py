@@ -16,7 +16,8 @@ class Pong:
 		pygame.display.flip()
 
 	def main(self):
-		table = Table(self.screen)
+		# start menu here
+		table = Table(self.screen)  # pass to table the player_option saved to table.game_mode
 		while True:
 			self.screen.fill("black")
 
