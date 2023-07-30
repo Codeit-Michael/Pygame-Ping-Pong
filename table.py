@@ -56,11 +56,11 @@ class Table:
 				self.playerB.move_bottom()
 
 	def bot_opponent(self):
-		if self.ball.direction == "left":
-			if self.ball.rect.centery >= self.playerA.rect.centery:
+		if self.ball.direction == "left" and self.ball.rect.centery != self.playerA.rect.centery:
+			if self.ball.rect.top <= self.playerA.rect.top:
 				if self.playerA.rect.top > 0:
 					self.playerA.move_up()
-			if self.ball.rect.centery <= self.playerA.rect.centery:
+			if self.ball.rect.bottom >= self.playerA.rect.bottom:
 				if self.playerA.rect.bottom < HEIGHT:
 					self.playerA.move_bottom()
 
