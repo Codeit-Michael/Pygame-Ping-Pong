@@ -1,4 +1,5 @@
 import pygame, time
+import sys
 from player import Player
 from ball import Ball
 from settings import WIDTH, HEIGHT, player_width, player_height
@@ -8,7 +9,7 @@ class Table:
 		self.screen = screen
 		self.game_over = False
 		self.score_limit = 7
-		self.game_mode = "single"
+		self.winner = None
 		self._generate_world()
 
 		# text info
@@ -51,18 +52,10 @@ class Table:
 	def player_move(self):
 		keys = pygame.key.get_pressed()
 
-		# gives player A access to movements for multiplayer mode
-		if keys[pygame.K_w] and self.game_mode == "multiplayer":
-			if self.playerA.rect.top > 0:
-				self.playerA.move_up()
-		if keys[pygame.K_s] and self.game_mode == "multiplayer":
-			if self.playerA.rect.bottom < HEIGHT:
-				self.playerA.move_bottom()
+		# for bot opponent controls
+		self._bot_opponent()
 
-		# gives player A bot movement for single playing mode
-		if self.game_mode == "single":
-			self._bot_opponent()
-
+		# for player controls
 		if keys[pygame.K_UP]:
 			if self.playerB.rect.top > 0:
 				self.playerB.move_up()
@@ -77,6 +70,12 @@ class Table:
 		self.screen.blit(A_score, (WIDTH // 4, 50))
 		self.screen.blit(B_score, ((WIDTH // 4) * 3, 50))
 
+	def _game_end(self):
+		if self.winner != None:
+			print(f"{self.winner} wins!!")
+			pygame.quit()
+			sys.exit()
+
 	def update(self):
 		self._show_score()
 
@@ -84,4 +83,12 @@ class Table:
 		self.playerB.update(self.screen)
 
 		self._ball_hit()
+
+		if self.playerA.score == 5:
+			self.winner = "Opponent"
+
+		elif self.playerB.score == 5:
+			self.winner = "You"
+
+		self._game_end()
 		self.ball.update(self.screen)
