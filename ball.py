@@ -5,11 +5,10 @@ from settings import WIDTH, HEIGHT
 pygame.init()
 
 class Ball:
-	def __init__(self, x, y, radius, length = 0):
+	def __init__(self, x, y, radius):
 		self.x = x
 		self.y = y
 		self.radius = radius
-		self.length = length
 		self.rect = pygame.Rect(self.x, self.y, radius, radius)
 		self.color = pygame.Color("red")
 		self.direction = None

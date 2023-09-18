@@ -28,7 +28,6 @@ class Pong:
 
 			table.player_move()
 			table.update()
-			pygame.display.update()
 			self.draw()
 			self.FPS.tick(30)
 

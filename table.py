@@ -8,7 +8,7 @@ class Table:
 	def __init__(self, screen):
 		self.screen = screen
 		self.game_over = False
-		self.score_limit = 7
+		self.score_limit = 10
 		self.winner = None
 		self._generate_world()
 
@@ -84,10 +84,10 @@ class Table:
 
 		self._ball_hit()
 
-		if self.playerA.score == 5:
+		if self.playerA.score == self.score_limit:
 			self.winner = "Opponent"
 
-		elif self.playerB.score == 5:
+		elif self.playerB.score == self.score_limit:
 			self.winner = "You"
 
 		self._game_end()
